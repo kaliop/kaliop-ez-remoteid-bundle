@@ -1,0 +1,6 @@
+kaliop_ez_remote_id:
+  tab:
+    reference: Reference
+
+  location: Location
+  content: Content

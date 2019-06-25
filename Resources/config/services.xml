@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="kaliop_ez_remote_id.reference_tab" class="Kaliop\EzRemoteIdBundle\Tab\ReferenceTab" public="false">
+            <argument type="service" id="twig" />
+            <argument type="service" id="translator" />
+            <argument type="service" id="eZ\Publish\API\Repository\PermissionResolver" />
+            <argument type="service" id="form.factory" />
+            <tag name="ezplatform.tab" group="location-view" />
+        </service>
+
+        <service id="kaliop_ez_remote_id.listener.remote_id_change"
+                 class="Kaliop\EzRemoteIdBundle\EventListener\RemoteIdTabSubscriber"
+                 public="false">
+            <argument type="service" id="eZ\Publish\API\Repository\PermissionResolver" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="kaliop_ez_remote_id.components"
+                 parent="EzSystems\EzPlatformAdminUi\Component\LinkComponent"
+                 public="false">
+            <argument key="$href">/bundles/kaliopezremoteid/css/reference.css</argument>
+            <argument key="$rel">stylesheet</argument>
+            <tag name="ezplatform.admin_ui.component" group="stylesheet-head" />
+        </service>
+
+        <service id="kaliop_ez_remote_id.validator.location_remote_id"
+                 class="Kaliop\EzRemoteIdBundle\Validator\Constraint\LocationRemoteIdValidator"
+                 public="false">
+            <argument type="service" id="ezpublish.api.service.location" />
+            <tag name="validator.constraint_validator" />
+        </service>
+
+        <service id="kaliop_ez_remote_id.validator.content_remote_id"
+                 class="Kaliop\EzRemoteIdBundle\Validator\Constraint\ContentRemoteIdValidator"
+                 public="false">
+            <argument type="service" id="ezpublish.api.service.content" />
+            <tag name="validator.constraint_validator" />
+        </service>
+    </services>
+</container>

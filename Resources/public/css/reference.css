@@ -1,0 +1,14 @@
+.table-remote-id .table-remote-id__cell--actions {
+    width: 100px;
+}
+
+/*.table-remote-id .table-remote-id__cell--actions .ez-icon {*/
+/*    width: 24px;*/
+/*    height: 24px;*/
+/*    fill: #f15a10;*/
+/*}*/
+
+.kaliop-remote-id-modal__errors {
+    color: var(--red);
+    padding: 5px;
+}

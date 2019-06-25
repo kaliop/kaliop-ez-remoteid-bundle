@@ -1,0 +1,23 @@
+{
+    "name": "kaliop/kaliop-ez-remoteid-bundle",
+    "description": "Bundle provides Reference tab to location view in admin panel where the remoteID can be changed by user with right permissions.",
+    "type": "symfony-bundle",
+    "keywords": ["remoteid", "ezplatform"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Grzegorz Balcewicz",
+            "email": "gbalcewicz@kaliop.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "ezsystems/ezpublish-kernel": ">=7.2",
+        "twig/twig": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kaliop\\EzRemoteIdBundle\\": ""
+        }
+    }
+}

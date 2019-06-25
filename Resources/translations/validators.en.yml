@@ -1,0 +1,8 @@
+kaliop_ez_remote_id:
+  validator:
+    remote_id:
+      invalid_characters: Remote ID cannot contain %invalidCharacters% characters.
+    location_remote_id:
+      duplicate: Location with this Remote ID already exists.
+    content_remote_id:
+      duplicate: Content with this Remote ID already exists.

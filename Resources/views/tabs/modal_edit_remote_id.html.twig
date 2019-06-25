@@ -1,0 +1,74 @@
+{% form_theme location_form '@ezdesign/content/form_fields.html.twig' %}
+{% form_theme content_form '@ezdesign/content/form_fields.html.twig' %}
+
+<div class="modal fade ez-modal" id="kaliop-remote-id-modal--edit-location" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        {{ form_start(location_form, {
+            action: path('kaliop.remote_id.change_location', {
+                locationId: location.id
+            }),
+            attr: {
+                'data-validate-url': path('kaliop.remote_id.validate_location', {
+                    locationId: location.id
+                })
+            }
+        }) }}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{ 'kaliop.tab_action.reference.location_remote_id'|trans|desc('Edit Location Remote ID') }}</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'tab.urls.modal_close'|trans|desc('Close') }}">
+                    <svg class="ez-icon ez-icon--medium" aria-hidden="true">
+                        <use xlink:href="{{ asset('bundles/ezplatformadminui/img/ez-icons.svg') }}#discard"></use>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="kaliop-remote-id-modal__errors" style="display: none;"></div>
+                {{ form_widget(location_form.remoteId) }}
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">
+                    {{ 'tab.urls.add.cancel'|trans|desc('Cancel') }}
+                </button>
+                {{ form_widget(location_form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            </div>
+        </div>
+        {{ form_end(location_form) }}
+    </div>
+</div>
+
+<div class="modal fade ez-modal" id="kaliop-remote-id-modal--edit-content" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        {{ form_start(content_form, {
+            action: path('kaliop.remote_id.change_content', {
+                locationId: location.id
+            }),
+            attr: {
+                'data-validate-url': path('kaliop.remote_id.validate_content', {
+                    locationId: location.id
+                })
+            }
+        }) }}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">{{ 'kaliop.tab_action.reference.content_remote_id'|trans|desc('Edit Content Remote ID') }}</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'tab.urls.modal_close'|trans|desc('Close') }}">
+                    <svg class="ez-icon ez-icon--medium" aria-hidden="true">
+                        <use xlink:href="{{ asset('bundles/ezplatformadminui/img/ez-icons.svg') }}#discard"></use>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="kaliop-remote-id-modal__errors" style="display: none;"></div>
+                {{ form_widget(content_form.remoteId) }}
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">
+                    {{ 'tab.urls.add.cancel'|trans|desc('Cancel') }}
+                </button>
+                {{ form_widget(content_form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            </div>
+        </div>
+        {{ form_end(content_form) }}
+    </div>
+</div>

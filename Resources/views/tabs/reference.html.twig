@@ -1,0 +1,51 @@
+{% trans_default_domain 'kaliop_ez_remote_id' %}
+{% include '@ezdesign/parts/table_header.html.twig' with {
+    headerText: 'kaliop_ez_remote_id.tab.reference.remote_id'|trans()|desc('Remote ID')
+} %}
+
+<table class="table-remote-id table">
+    <tbody class="table-remote-id__body">
+        <tr class="table-remote-id__row">
+            <td class="table-remote-id__cell--target">{{ 'kaliop_ez_remote_id.location'|trans }}</td>
+            <td class="table-remote-id__cell--value">{{ location.remoteId }}</td>
+            <td class="table-remote-id__cell--actions">
+                {% if can_edit_remote_id %}
+                <button type="button" title="{{ 'kaliop_ez_remote_id.action.edit'|trans }}" class="btn btn-icon"
+                   data-target="#kaliop-remote-id-modal--edit-location" data-toggle="modal">
+                     <svg class="ez-icon ez-icon-edit">
+                        <use xlink:href="/bundles/ezplatformadminui/img/ez-icons.svg#edit"></use>
+                    </svg>
+                </button>
+                {% endif %}
+            </td>
+        </tr>
+        <tr class="table-remote-id__row">
+            <td class="table-remote-id__cell--target">{{ 'kaliop_ez_remote_id.content'|trans }}</td>
+            <td class="table-remote-id__cell--value">{{ content.contentInfo.remoteId }}</td>
+            <td class="table-remote-id__cell--actions">
+                {% if can_edit_remote_id %}
+                <button type="button" title="{{ 'kaliop_ez_remote_id.action.edit'|trans }}" class="btn btn-icon"
+                    data-target="#kaliop-remote-id-modal--edit-content" data-toggle="modal">
+                        <svg class="ez-icon ez-icon-edit">
+                        <use xlink:href="/bundles/ezplatformadminui/img/ez-icons.svg#edit"></use>
+                    </svg>
+                </button>
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{% include '@KaliopEzRemoteId/tabs/modal_edit_remote_id.html.twig' with {
+    content_form: content_form,
+    location_form: location_form,
+    location: location
+} only %}
+
+{% block javascripts %}
+    {% javascripts
+        '@KaliopEzRemoteIdBundle/Resources/public/js/reference.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
