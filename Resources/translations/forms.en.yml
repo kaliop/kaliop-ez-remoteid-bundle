@@ -1,0 +1,6 @@
+role:
+  policy:
+    kaliop_ez_remote_id: Kaliop Remote ID
+    kaliop_ez_remote_id.all_functions: Kaliop Remote ID / All functions
+    kaliop_ez_remote_id.view: Kaliop Remote ID / View
+    kaliop_ez_remote_id.edit: Kaliop Remote ID / Edit
