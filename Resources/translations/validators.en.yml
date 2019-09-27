@@ -6,3 +6,7 @@ kaliop_ez_remote_id:
       duplicate: Location with this Remote ID already exists.
     content_remote_id:
       duplicate: Content with this Remote ID already exists.
+    remote_id_pattern:
+      invalid: Remote ID has invalid format. %patternDescription%
+      invalid_default: Remote ID has invalid format. Value must match %pattern%.
+      too_long: Remote ID cannot be longer than %maxLength% characters.

@@ -12,6 +12,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    const DEFAULT_PATTERN = '/^[a-z0-9]+$/';
+
     /**
      * {@inheritdoc}
      */
@@ -20,9 +22,26 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('kaliop_ez_remote_id');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode('default')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('pattern')->defaultValue(self::DEFAULT_PATTERN)->end()
+                        ->scalarNode('max_length')->defaultValue(32)->end()
+                    ->end()
+                ->end()
+                ->arrayNode('content_types')
+                    ->useAttributeAsKey('name')
+                    ->arrayPrototype()
+                        ->children()
+                           ->scalarNode('pattern')->defaultValue(self::DEFAULT_PATTERN)->end()
+                           ->scalarNode('max_length')->defaultValue(32)->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

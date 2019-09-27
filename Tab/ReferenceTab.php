@@ -2,9 +2,12 @@
 
 namespace Kaliop\EzRemoteIdBundle\Tab;
 
+use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\PermissionResolver;
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\API\Repository\Values\Content\Location;
+use eZ\Publish\API\Repository\ContentTypeService;
+use eZ\Publish\Core\Repository\Repository;
 use EzSystems\EzPlatformAdminUi\Tab\AbstractTab;
 use Kaliop\EzRemoteIdBundle\Form\Type\ContentRemoteIdType;
 use Kaliop\EzRemoteIdBundle\Form\Type\LocationRemoteIdType;
@@ -18,20 +21,35 @@ class ReferenceTab extends AbstractTab
      * @var PermissionResolver
      */
     private $permissionResolver;
+
     /**
      * @var FormFactory
      */
     private $formFactory;
 
+    /**
+     * @var ContentTypeService
+     */
+    private $contentTypeService;
+
+    /**
+     * ReferenceTab constructor.
+     * @param Environment $twig
+     * @param TranslatorInterface $translator
+     * @param PermissionResolver $permissionResolver
+     * @param FormFactory $formFactory
+     */
     public function __construct(
         Environment $twig,
         TranslatorInterface $translator,
         PermissionResolver $permissionResolver,
-        FormFactory $formFactory
+        FormFactory $formFactory,
+        ContentTypeService $contentTypeService
     ) {
         parent::__construct($twig, $translator);
         $this->permissionResolver = $permissionResolver;
         $this->formFactory = $formFactory;
+        $this->contentTypeService = $contentTypeService;
     }
 
     public function getIdentifier(): string
@@ -57,9 +75,19 @@ class ReferenceTab extends AbstractTab
     {
         /** @var ContentInfo $contentInfo */
         $contentInfo = $parameters['content']->contentInfo;
+
+        try {
+            $contentType = $this->contentTypeService->loadContentType($contentInfo->contentTypeId);
+            $contentTypeIdentifier = $contentType->identifier;
+        } catch (NotFoundException $exception) {
+            $contentTypeIdentifier = null;
+        }
+
         $contentForm = $this->formFactory->createNamed('content_remote_id', ContentRemoteIdType::class, [
             'contentInfo' => $contentInfo,
             'remoteId' => $contentInfo->remoteId
+        ], [
+            'content_type' => $contentTypeIdentifier
         ]);
 
         /** @var Location $location */
@@ -67,6 +95,8 @@ class ReferenceTab extends AbstractTab
         $locationForm = $this->formFactory->createNamed('location_remote_id', LocationRemoteIdType::class, [
             'location' => $location,
             'remoteId' => $location->remoteId
+        ], [
+            'content_type' => $contentTypeIdentifier
         ]);
 
         $viewParameters = [

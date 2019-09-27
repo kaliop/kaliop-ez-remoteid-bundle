@@ -13,6 +13,7 @@ use Kaliop\EzRemoteIdBundle\Form\Type\ContentRemoteIdType;
 use Kaliop\EzRemoteIdBundle\Form\Type\LocationRemoteIdType;
 use Kaliop\EzRemoteIdBundle\Validator\Constraint\ContentRemoteId;
 use Kaliop\EzRemoteIdBundle\Validator\Constraint\LocationRemoteId;
+use Kaliop\EzRemoteIdBundle\Validator\Constraint\RemoteIdPattern;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
@@ -48,7 +49,9 @@ class RemoteIdController extends AbstractController
             'valueObject' => $location->getContentInfo()
         ]));
 
-        $form = $this->createNamedForm('location_remote_id', LocationRemoteIdType::class);
+        $form = $this->createNamedForm('location_remote_id', LocationRemoteIdType::class, null, [
+            'content_type' => $this->getContentTypeIdentifier($location)
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -89,7 +92,10 @@ class RemoteIdController extends AbstractController
         $validator = $this->getValidator();
         $violationList = $validator->validate($remoteId, [
             new NotBlank(),
-            new LocationRemoteId()
+            new LocationRemoteId(),
+            new RemoteIdPattern([
+                'contentType' => $this->getContentTypeIdentifier($location)
+            ])
         ]);
 
         return $this->violationListToResponse($violationList);
@@ -115,7 +121,10 @@ class RemoteIdController extends AbstractController
         $validator = $this->getValidator();
         $violationList = $validator->validate($remoteId, [
             new NotBlank(),
-            new ContentRemoteId()
+            new ContentRemoteId(),
+            new RemoteIdPattern([
+                'contentType' => $this->getContentTypeIdentifier($location)
+            ])
         ]);
 
         return $this->violationListToResponse($violationList);
@@ -139,7 +148,9 @@ class RemoteIdController extends AbstractController
             'valueObject' => $location->getContentInfo()
         ]));
 
-        $form = $this->createNamedForm('content_remote_id', ContentRemoteIdType::class);
+        $form = $this->createNamedForm('content_remote_id', ContentRemoteIdType::class, null, [
+            'content_type' => $this->getContentTypeIdentifier($location)
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -213,5 +224,22 @@ class RemoteIdController extends AbstractController
     private function getValidator()
     {
         return $this->container->get('validator');
+    }
+
+    /**
+     * @param Location $location
+     * @return string
+     */
+    private function getContentTypeIdentifier(Location $location)
+    {
+        $contentTypeRepository = $this->getRepository()->getContentTypeService();
+
+        try {
+            $contentType = $contentTypeRepository->loadContentType($location->contentInfo->contentTypeId);
+        } catch (NotFoundException $exception) {
+            return null;
+        }
+
+        return $contentType->identifier;
     }
 }

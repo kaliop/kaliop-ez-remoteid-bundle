@@ -10,6 +10,7 @@
             <argument type="service" id="translator" />
             <argument type="service" id="eZ\Publish\API\Repository\PermissionResolver" />
             <argument type="service" id="form.factory" />
+            <argument type="service" id="ezpublish.api.service.content_type" />
             <tag name="ezplatform.tab" group="location-view" />
         </service>
 
@@ -39,6 +40,15 @@
                  class="Kaliop\EzRemoteIdBundle\Validator\Constraint\ContentRemoteIdValidator"
                  public="false">
             <argument type="service" id="ezpublish.api.service.content" />
+            <tag name="validator.constraint_validator" />
+        </service>
+
+        <service id="kaliop_ez_remote_id.validator.remote_id_pattern"
+                 class="Kaliop\EzRemoteIdBundle\Validator\Constraint\RemoteIdPatternValidator"
+                 public="false">
+            <argument key="$defaultPattern"><!-- injected in configuration --></argument>
+            <argument key="$contentTypePatterns"><!-- injected in configuration --></argument>
+            <argument key="$translator" type="service" id="translator" />
             <tag name="validator.constraint_validator" />
         </service>
     </services>
