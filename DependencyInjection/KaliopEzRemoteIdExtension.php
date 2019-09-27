@@ -24,5 +24,22 @@ class KaliopEzRemoteIdExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        $this->setPatternDefinition($container, $config);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     * @param array $config
+     */
+    private function setPatternDefinition(ContainerBuilder $container, array $config)
+    {
+        $remoteIdPatternDefinition = $container->getDefinition('kaliop_ez_remote_id.validator.remote_id_pattern');
+        if (!$remoteIdPatternDefinition) {
+            return;
+        }
+
+        $remoteIdPatternDefinition->setArgument('$defaultPattern', $config['default']);
+        $remoteIdPatternDefinition->setArgument('$contentTypePatterns', $config['content_types']);
     }
 }

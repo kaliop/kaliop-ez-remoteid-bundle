@@ -32,9 +32,9 @@ abstract class AbstractRemoteIdValidator extends ConstraintValidator
         }
 
         if (!empty($invalidCharSets)) {
-            $this->context->buildViolation('kaliop_ez_remote_id.validator.remote_id.invalid_characters', [
-                    '%invalidCharacters%' => implode(', ', $invalidCharSets)
-            ])->addViolation();
+            $this->context->buildViolation('kaliop_ez_remote_id.validator.remote_id.invalid_characters')
+                ->setParameter('%invalidCharacters%', implode(', ', $invalidCharSets))
+                ->addViolation();
         }
 
 
