@@ -1,3 +1,10 @@
+kaliop_ez_remote_id:
+  tab:
+    reference: Reference
+
+  location: Location
+  content: Content
+
 pattern_description:
   '/^[a-z0-9]+$/': Value must contain only small letters and numbers.
 
