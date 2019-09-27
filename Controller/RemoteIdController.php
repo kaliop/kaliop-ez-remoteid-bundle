@@ -63,7 +63,10 @@ class RemoteIdController extends AbstractController
             $locationService->updateLocation($formLocation, $updateStruct);
         }
 
-        return new RedirectResponse($router->generate($location) . '#ez-tab-location-view-reference-tab#tab');
+        return $this->redirect($router->generate('_ezpublishLocation', [
+            'locationId' => $location->id,
+            '_fragment' => 'ez-tab-location-view-reference-tab'
+        ]) . '#tab');
     }
 
     /**
@@ -151,7 +154,10 @@ class RemoteIdController extends AbstractController
             $contentService->updateContentMetadata($contentInfo, $updateStruct);
         }
 
-        return new RedirectResponse($router->generate($location) . '#ez-tab-location-view-reference-tab#tab');
+        return $this->redirect($router->generate('_ezpublishLocation', [
+            'locationId' => $location->id,
+            '_fragment' => 'ez-tab-location-view-reference-tab'
+        ]) . '#tab');
     }
 
     /**
