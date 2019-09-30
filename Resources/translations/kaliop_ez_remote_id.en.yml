@@ -7,8 +7,8 @@ kaliop_ez_remote_id:
     cancel: Cancel
     close: Close
   tab_action:
-    location_remote_id: Edit Content Remote ID
-    content_remote_id: Edit Location Remote ID
+    location_remote_id: Edit Location Remote ID
+    content_remote_id: Edit Content Remote ID
 
   location: Location
   content: Content
