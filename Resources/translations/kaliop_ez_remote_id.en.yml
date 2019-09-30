@@ -1,6 +1,10 @@
 kaliop_ez_remote_id:
   tab:
     reference: Reference
+    reference.remote_id: Edit Content Remote ID
+  action:
+    edit: Edit
+    cancel: Cancel
 
   location: Location
   content: Content

@@ -15,7 +15,7 @@
         }) }}
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">{{ 'kaliop.tab_action.reference.location_remote_id'|trans|desc('Edit Location Remote ID') }}</h3>
+                <h3 class="modal-title">{{ 'kaliop.tab_action.reference.location_remote_id'|trans({}, 'kaliop_ez_remote_id') }}</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'tab.urls.modal_close'|trans|desc('Close') }}">
                     <svg class="ez-icon ez-icon--medium" aria-hidden="true">
                         <use xlink:href="{{ asset('bundles/ezplatformadminui/img/ez-icons.svg') }}#discard"></use>
@@ -28,7 +28,7 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-dark" data-dismiss="modal">
-                    {{ 'tab.urls.add.cancel'|trans|desc('Cancel') }}
+                    {{ 'kaliop_ez_remote_id.action.cancel'|trans({}, 'kaliop_ez_remote_id') }}
                 </button>
                 {{ form_widget(location_form.save, {'attr': {'class': 'btn btn-primary'}}) }}
             </div>
@@ -64,7 +64,7 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-dark" data-dismiss="modal">
-                    {{ 'tab.urls.add.cancel'|trans|desc('Cancel') }}
+                    {{ 'kaliop_ez_remote_id.action.cancel'|trans({}, 'kaliop_ez_remote_id') }}
                 </button>
                 {{ form_widget(content_form.save, {'attr': {'class': 'btn btn-primary'}}) }}
             </div>
