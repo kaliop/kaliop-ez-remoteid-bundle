@@ -81,6 +81,7 @@ kaliop_ez_remote_id:
             pattern: /^a.*b$/
             max_length: 10
 ```
+Note: Please keep in mind that `max_length` should not exceed constraints in the database tables what is 100 characters (`VARCHAR(100)`). This can differ from different versions of ezPlatform so it's good practice to check it with your current implementation.
 
 Note: Invalid pattern message is in two variants. If the pattern desctiption is defined in the translation domain
 `kaliop_ez_remote_id` like the one below:
