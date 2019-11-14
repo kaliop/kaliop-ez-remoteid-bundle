@@ -9,6 +9,7 @@ use eZ\Publish\API\Repository\Repository;
 use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\SPI\Persistence\Content\ContentInfo;
+use EzSystems\EzPlatformAdminUi\Notification\NotificationHandlerInterface;
 use Kaliop\EzRemoteIdBundle\Form\Type\ContentRemoteIdType;
 use Kaliop\EzRemoteIdBundle\Form\Type\LocationRemoteIdType;
 use Kaliop\EzRemoteIdBundle\Validator\Constraint\ContentRemoteId;
@@ -31,6 +32,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class RemoteIdController extends AbstractController
 {
+    /**
+     * @var NotificationHandlerInterface
+     */
+    private $notificationHandler;
+
+    /**
+     * RemoteIdController constructor.
+     * @param NotificationHandlerInterface $notificationHandler
+     */
+    public function __construct(NotificationHandlerInterface $notificationHandler)
+    {
+        $this->notificationHandler = $notificationHandler;
+    }
+
     /**
      * @param $locationId
      * @param Request $request
@@ -64,6 +79,8 @@ class RemoteIdController extends AbstractController
             $updateStruct->remoteId = $remoteId;
 
             $locationService->updateLocation($formLocation, $updateStruct);
+        } else {
+            $this->notifyFormErrors($form);
         }
 
         return $this->redirect($router->generate('_ezpublishLocation', [
@@ -163,12 +180,29 @@ class RemoteIdController extends AbstractController
             $updateStruct->remoteId = $remoteId;
 
             $contentService->updateContentMetadata($contentInfo, $updateStruct);
+        } else {
+            $this->notifyFormErrors($form);
         }
 
         return $this->redirect($router->generate('_ezpublishLocation', [
             'locationId' => $location->id,
             '_fragment' => 'ez-tab-location-view-reference-tab'
         ]) . '#tab');
+    }
+
+    private function violationListToArray(ConstraintViolationListInterface $violationList)
+    {
+        if ($violationList->count() === 0) {
+            return [];
+        }
+
+         $errors = [];
+        /** @var ConstraintViolation $violation */
+        foreach ($violationList as $violation) {
+            $errors[] = $violation->getMessage();
+        }
+
+        return $errors;
     }
 
     /**
@@ -183,11 +217,7 @@ class RemoteIdController extends AbstractController
             ]);
         }
 
-        $errors = [];
-        /** @var ConstraintViolation $violation */
-        foreach ($violationList as $violation) {
-            $errors[] = $violation->getMessage();
-        }
+        $errors = $this->violationListToArray($violationList);
 
         return new JsonResponse([
             'valid' => false,
@@ -241,5 +271,18 @@ class RemoteIdController extends AbstractController
         }
 
         return $contentType->identifier;
+    }
+
+    /**
+     * @param FormInterface $form
+     */
+    private function notifyFormErrors(FormInterface $form)
+    {
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        $this->notificationHandler->error(implode(" ", $errors));
     }
 }

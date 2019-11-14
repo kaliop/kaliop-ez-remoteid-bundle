@@ -51,5 +51,10 @@
             <argument key="$translator" type="service" id="translator" />
             <tag name="validator.constraint_validator" />
         </service>
+
+        <service id="Kaliop\EzRemoteIdBundle\Controller\RemoteIdController"
+                 class="Kaliop\EzRemoteIdBundle\Controller\RemoteIdController">
+            <argument type="service" id="EzSystems\EzPlatformAdminUi\Notification\NotificationHandlerInterface" />
+        </service>
     </services>
 </container>
